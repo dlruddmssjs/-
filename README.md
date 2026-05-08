@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
@@ -49,7 +50,7 @@
     ];
 
     // 카카오톡 미리보기 사진 (갤러리 첫번째 사진과 같아도 OK)
-    const ogImage = GITHUB + "KakaoTalk_20260508_135716534_05.jpg";
+    const ogImage = GITHUB + "thumb.jpg";
   </script>
   <!-- ===================================================== -->
 
@@ -64,10 +65,11 @@
 
   <!-- OG 태그 (카카오톡 미리보기) -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="박종건 ♥ 이경은 결혼합니다" />
+  <meta property="og:title" content="박종건 이경은 결혼합니다" />
   <meta property="og:description" content="2028년 5월 21일 토요일 오후 1시 · 그랜드웨딩홀 로즈홀" />
   <meta property="og:image" content="https://raw.githubusercontent.com/dlruddmssjs/Wedding-Invite/main/KakaoTalk_20260508_135716534_05.jpg" />
   <meta property="og:url" content="https://dlruddmssjs.github.io/-/" />
+  <meta name="title" content="박종건 이경은 결혼합니다" />
   <script>
     // OG 이미지 동적 설정
     document.addEventListener('DOMContentLoaded', () => {
@@ -533,7 +535,7 @@
     Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
-        title: '박종건 ♥ 이경은 결혼합니다',
+        title: '박종건 이경은 결혼합니다',
         description: '2028년 5월 21일 토요일 오후 1시\n그랜드웨딩홀 · 로즈홀',
         imageUrl: ogImage,
         link: {
