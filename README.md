@@ -49,7 +49,7 @@
     ];
 
     // 카카오톡 미리보기 사진 (갤러리 첫번째 사진과 같아도 OK)
-    const ogImage = GITHUB + "thumb.jpg";
+    const ogImage = GITHUB + "KakaoTalk_20260508_135716534_05.jpg";
   </script>
   <!-- ===================================================== -->
 
