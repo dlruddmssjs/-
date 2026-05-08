@@ -4,7 +4,7 @@
   <meta property="og:title" content="박종건 ♥ 이경은 결혼합니다" />
   <meta property="og:description" content="2028년 5월 21일 토요일 오후 1시 · 그랜드웨딩홀 로즈홀" />
   <meta property="og:image" content="https://raw.githubusercontent.com/dlruddmssjs/Wedding-Invite/main/KakaoTalk_20260508_135716534_05.jpg" />
-  <meta property="og:url" content="https://아이디.github.io/" />
+  <meta property="og:url" content="https://dlruddmssjs.github.io/" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>박종건 ♥ 이경은 결혼합니다</title>
