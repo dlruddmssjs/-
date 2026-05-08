@@ -535,8 +535,8 @@
       objectType: 'feed',
       content: {
         title: '박종건 이경은 결혼합니다',
-        description: '2028년 5월 21일 토요일 오후 1시\n그랜드웨딩홀 · 로즈홀',
-        imageUrl: ogImage,
+        description: '2028년 5월 21일 토요일 오후 1시 · 그랜드웨딩홀 로즈홀',
+        imageUrl: 'https://raw.githubusercontent.com/dlruddmssjs/-/main/KakaoTalk_20260508_135716534_05.jpg',
         link: {
           mobileWebUrl: 'https://dlruddmssjs.github.io/-/',
           webUrl: 'https://dlruddmssjs.github.io/-/',
