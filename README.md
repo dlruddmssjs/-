@@ -45,8 +45,7 @@
       GITHUB + "photo27.jpg",
       GITHUB + "photo28.jpg",
       GITHUB + "photo29.jpg",
-      GITHUB + "photo30.jpg",
-    
+      GITHUB + "photo30.jpg"
     ];
 
     // 카카오톡 미리보기 사진 (갤러리 첫번째 사진과 같아도 OK)
@@ -58,11 +57,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Nanum+Myeongjo:wght@400;700&family=Gowun+Batang&display=swap" rel="stylesheet" />
 
+  <!-- 카카오 SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+    integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4"
+    crossorigin="anonymous"></script>
+
   <!-- OG 태그 (카카오톡 미리보기) -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="박종건 ♥ 이경은 결혼합니다" />
-  <meta property="og:description" content="2028년 5월 21일 토요일 오후 1시 · 그랜드웨딩홀 로즈홀" />
-  <meta property="og:image" content="https://raw.githubusercontent.com/dlruddmssjs/Wedding-Invite/main/KakaoTalk_20260508_135716534_05.jpg" />
+  <meta property="og:description" content="2028년 5월 21일 토요일 오후 1시" />
   <meta property="og:url" content="https://dlruddmssjs.github.io/-/" />
   <script>
     // OG 이미지 동적 설정
@@ -228,6 +231,18 @@
     footer.visible { opacity: 1; }
     .footer-names { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-style: italic; color: var(--dark); margin-bottom: 8px; }
     .footer-date { font-size: 12px; letter-spacing: 3px; color: var(--light-text); }
+
+    /* ─── KAKAO SHARE ─── */
+    .kakao-share-wrap { text-align: center; padding: 32px 0 0; }
+    .kakao-share-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #FEE500; color: #3A1D1D; border: none;
+      padding: 14px 32px; font-family: 'Gowun Batang', serif;
+      font-size: 14px; letter-spacing: 2px; cursor: pointer;
+      border-radius: 2px; transition: opacity 0.2s; font-weight: bold;
+    }
+    .kakao-share-btn:hover { opacity: 0.85; }
+    .kakao-share-btn img { width: 22px; height: 22px; }
 
     /* ─── TOAST ─── */
     .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--dark); color: var(--cream); padding: 12px 28px; font-size: 12px; letter-spacing: 2px; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 9998; white-space: nowrap; }
@@ -465,6 +480,20 @@
   </div>
 </section>
 
+<!-- ─── KAKAO SHARE ─── -->
+<section id="share">
+  <div class="section-label">Share</div>
+  <div class="section-title">청첩장 공유하기</div>
+  <div class="gold-line"></div>
+  <p style="text-align:center; font-size:13px; color:var(--light-text); margin-bottom:4px;">소중한 분들께 전달해 주세요</p>
+  <div class="kakao-share-wrap">
+    <button class="kakao-share-btn" onclick="shareKakao()">
+      <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" alt="kakao" />
+      카카오톡으로 공유
+    </button>
+  </div>
+</section>
+
 <!-- ─── FOOTER ─── -->
 <footer id="footer">
   <div style="margin-bottom:20px; opacity:0.4;">
@@ -496,6 +525,33 @@
 <div class="toast" id="toast"></div>
 
 <script>
+  // ─── 카카오 초기화 & 공유
+  Kakao.init('c64517d05ac5e8fa88a4783d7dec627d');
+
+  function shareKakao() {
+    Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: '박종건 ♥ 이경은 결혼합니다',
+        description: '2028년 5월 21일 토요일 오후 1시\n그랜드웨딩홀 · 로즈홀',
+        imageUrl: ogImage,
+        link: {
+          mobileWebUrl: 'https://dlruddmssjs.github.io/-/',
+          webUrl: 'https://dlruddmssjs.github.io/-/',
+        },
+      },
+      buttons: [
+        {
+          title: '모바일 청첩장 보기',
+          link: {
+            mobileWebUrl: 'https://dlruddmssjs.github.io/-/',
+            webUrl: 'https://dlruddmssjs.github.io/-/',
+          },
+        },
+      ],
+    });
+  }
+
   // ─── 갤러리 동적 생성
   window.addEventListener('DOMContentLoaded', () => {
     // 히어로 사진
