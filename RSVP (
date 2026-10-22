@@ -643,6 +643,12 @@ footer.visible { opacity:1; }
   </div>
   <div class="form-group"><label class="form-lbl">이름</label><input class="form-input" id="rsvp-name" type="text" placeholder="성함을 입력해주세요"/></div>
   <div class="form-group">
+    <label class="form-lbl">하객 구분</label>
+    <select class="form-sel" id="rsvp-side">
+      <option value="신랑측">신랑측</option>
+      <option value="신부측">신부측</option>
+    </select>
+  </div>     
     <label class="form-lbl">참석 인원</label>
     <select class="form-sel" id="rsvp-count">
       <option>1명</option><option>2명</option><option>3명</option><option>4명 이상</option>
@@ -842,29 +848,76 @@ function copyAcc(btn, num) {
   });
 }
 
-// ── RSVP (Google Forms 연동)
+/* ── RSVP (Formspree 연동) ── */
+
 let attendVal = 'yes';
+
 function selAttend(el, val) {
-  document.querySelectorAll('.attend-btn').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.attend-btn')
+    .forEach(btn => btn.classList.remove('on'));
+
   el.classList.add('on');
   attendVal = val;
 }
-function submitRsvp() {
-  const name  = document.getElementById('rsvp-name').value.trim();
-  const count = document.getElementById('rsvp-count').value;
-  const msg   = document.getElementById('rsvp-msg').value.trim();
-  if (!name) { showToast('이름을 입력해주세요'); return; }
 
-  const attendText = attendVal === 'yes' ? '참석합니다' : '참석이 어렵습니다';
-  const params = new URLSearchParams({
-    [ENTRY.attend]: attendText,
-    [ENTRY.name]:   name,
-    [ENTRY.count]:  count,
-    [ENTRY.msg]:    msg,
-  });
-  window.open(FORM_URL + '?' + params.toString(), '_blank');
-  document.getElementById('rsvp-success').style.display = 'block';
-  showToast('Google Forms가 열렸습니다 💌');
+async function submitRsvp() {
+  const name = document.getElementById('rsvp-name').value.trim();
+  const count = document.getElementById('rsvp-count').value;
+  const msg = document.getElementById('rsvp-msg').value.trim();
+
+  if (!name) {
+    showToast('이름을 입력해주세요');
+    return;
+  }
+
+  const btn = document.querySelector('#rsvp .submit-btn');
+
+  if (btn.disabled) return;
+
+  btn.disabled = true;
+  btn.textContent = '전송 중...';
+
+  const data = {
+    "참석여부": attendVal === 'yes'
+      ? '참석합니다'
+      : '참석이 어렵습니다',
+    "이름": name,
+    "참석인원": attendVal === 'yes' ? count : '0명',
+    "메시지": msg
+  };
+
+  try {
+    const response = await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      throw new Error(`전송 실패: ${response.status}`);
+    }
+
+    document.getElementById('rsvp-success').style.display = 'block';
+
+    document.querySelector('#rsvp-success .ok-text')
+      .textContent = '참석 여부가 전달되었습니다';
+
+    showToast('전송이 완료되었습니다 💌');
+
+    document.getElementById('rsvp-name').value = '';
+    document.getElementById('rsvp-msg').value = '';
+
+  } catch (error) {
+    console.error(error);
+    showToast('전송에 실패했습니다. 다시 시도해주세요.');
+
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '전 송 하 기';
+  }
 }
 
 // ── 배경음악
