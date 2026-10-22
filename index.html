@@ -434,6 +434,72 @@ footer.visible { opacity:1; }
 @keyframes fadeUp { to { opacity:1; transform:none; } }
 @keyframes fadeIn { to { opacity:1; } }
 @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(7px);} }
+
+
+/* ── 지도 ── */
+.wedding-map {
+  width: 100%;
+  margin-top: 20px;
+  overflow: hidden;
+  border: 1px solid var(--beige);
+  background: #f0ede8;
+}
+
+.wedding-map iframe {
+  display: block;
+  width: 100%;
+  height: 260px;
+  border: none;
+}
+
+/* ── 주소 복사 버튼 ── */
+.address-copy-btn {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  padding: 13px 16px;
+
+  background: var(--white);
+  border: 1px solid var(--beige);
+  color: var(--dark);
+
+  font-family: 'Gowun Batang', serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.address-copy-btn:active {
+  background: var(--beige);
+}
+
+/* ── 지도 버튼 ── */
+.map-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.map-btn {
+  display: block;
+  padding: 14px 8px;
+  background: var(--white);
+  border: 1px solid var(--beige);
+
+  color: var(--dark);
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+
+     
+
+
 </style>
 </head>
 <body>
@@ -528,27 +594,82 @@ footer.visible { opacity:1; }
   <div class="gallery-grid" id="galleryGrid"></div>
 </section>
 
-<!-- ── VENUE ── -->
-<div class="sec-divider"><div class="div-ornament"></div></div>
+
+<!-- ── VENUE / 오시는 길 ── -->
+<div class="sec-divider">
+  <div class="div-ornament"></div>
+</div>
+
 <section id="venue">
   <div class="sec-label">Location</div>
   <div class="sec-title">오시는 길</div>
   <div class="gold-bar"></div>
+
   <div class="venue-box">
-    <div class="venue-name">메리빌리아 더 프레스티지 · 가든홀</div>
-    <div class="venue-addr">경기 수원시 권선구 세화로 116 # <br>어디어디어디 1층<br>☎ 02-1234-5678</div>
+    <div class="venue-name">
+      메리빌리아 더 프레스티지
+    </div>
+
+    <div class="venue-addr">
+      가든홀 · 2층<br>
+      경기 수원시 권선구 세화로 116
+    </div>
+
+    <!-- 주소 복사 버튼 -->
+    <button
+      class="address-copy-btn"
+      onclick="copyVenueAddress()">
+      주소 복사하기
+    </button>
   </div>
-  <div class="map-area" onclick="alert('카카오 지도 API를 연결하세요')">🗺&nbsp; 지도 보기</div>
+
+  <!-- 실제 지도 -->
+  <div class="wedding-map">
+    <iframe
+      title="메리빌리아 더 프레스티지 위치"
+      src="https://maps.google.com/maps?q=%EA%B2%BD%EA%B8%B0%20%EC%88%98%EC%9B%90%EC%8B%9C%20%EA%B6%8C%EC%84%A0%EA%B5%AC%20%EC%84%B8%ED%99%94%EB%A1%9C%20116&z=16&output=embed"
+      width="100%"
+      height="260"
+      style="border:0;"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <!-- 지도 앱 연결 -->
   <div class="map-btns">
-    <a class="map-btn" href="https://map.kakao.com" target="_blank">카카오맵</a>
-    <a class="map-btn" href="https://naver.me" target="_blank">네이버지도</a>
+    <a
+      class="map-btn"
+      href="https://map.kakao.com/link/search/메리빌리아%20더%20프레스티지"
+      target="_blank"
+      rel="noopener noreferrer">
+      카카오맵
+    </a>
+
+    <a
+      class="map-btn"
+      href="https://map.naver.com/p/search/메리빌리아%20더%20프레스티지"
+      target="_blank"
+      rel="noopener noreferrer">
+      네이버지도
+    </a>
   </div>
+
+  <!-- 교통 안내 -->
   <div class="transport">
-    <strong>지하철</strong><br>2호선 00역 3번 출구 → 도보 5분<br>
-    <strong>버스</strong><br>00역 정류장 하차 (140, 342, 3412번)<br>
-    <strong>주차</strong><br>건물 내 지하 주차장 이용 (2시간 무료)
+    <strong>지하철</strong><br>
+    1호선 · 수인분당선 수원역<br>
+    2번 출구에서 도보 약 7~10분<br><br>
+
+    <strong>주소</strong><br>
+    경기 수원시 권선구 세화로 116<br><br>
+
+    <strong>예식홀</strong><br>
+    메리빌리아 더 프레스티지 2층 가든홀
   </div>
 </section>
+
 
 <!-- ── ACCOUNT ── -->
 <div class="sec-divider"><div class="div-ornament"></div></div>
@@ -803,6 +924,37 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
+
+
+async function copyVenueAddress() {
+  const address = '경기 수원시 권선구 세화로 116';
+
+  try {
+    await navigator.clipboard.writeText(address);
+    showToast('결혼식장 주소가 복사되었습니다 ✓');
+
+  } catch (err) {
+    // 클립보드 API를 사용할 수 없는 경우
+    const input = document.createElement('textarea');
+    input.value = address;
+    input.style.position = 'fixed';
+    input.style.opacity = '0';
+
+    document.body.appendChild(input);
+    input.select();
+
+    const copied = document.execCommand('copy');
+    document.body.removeChild(input);
+
+    if (copied) {
+      showToast('결혼식장 주소가 복사되었습니다 ✓');
+    } else {
+      showToast('주소 복사에 실패했습니다');
+    }
+  }
+}
+
+
 </script>
 </body>
 </html>
