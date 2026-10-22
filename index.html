@@ -32,14 +32,6 @@
   // 카카오톡 미리보기 사진 URL
   const ogImage = "https://raw.githubusercontent.com/dlruddmssjs/-/main/wedding-photo.png";
 
-  // ★ Google Forms 설정 (RSVP 실제 전송용)
-  const FORMSPREE_URL = 'https://formspree.io/f/meaeydkg';
-  const ENTRY = {
-    attend : 'entry.0000000001',  // 참석여부 필드 ID
-    name   : 'entry.0000000002',  // 이름 필드 ID
-    count  : 'entry.0000000003',  // 인원 필드 ID
-    msg    : 'entry.0000000004',  // 메시지 필드 ID
-  };
 
   // 배경음악 파일 경로 (GitHub에 bgm.mp3 업로드 후 아래 주석 해제)
   // const bgmSrc = GITHUB + "bgm.mp3";
@@ -324,37 +316,6 @@ section.visible { opacity:1; transform:none; }
 .copy-btn:hover { background:var(--off); }
 .copy-btn.done { background:var(--dark); color:var(--white); border-color:var(--dark); }
 
-/* ── RSVP ── */
-.rsvp-section { background:var(--white); }
-.form-lbl { display:block; font-size:10px; letter-spacing:3px; color:var(--stone); margin-bottom:7px; }
-.form-input,.form-sel {
-  width:100%; padding:13px 14px;
-  border:1px solid var(--beige); background:var(--off);
-  font-family:'Gowun Batang',serif; font-size:13px;
-  color:var(--dark); outline:none; transition:border-color .2s; -webkit-appearance:none;
-}
-.form-input:focus,.form-sel:focus { border-color:var(--dark); }
-.form-group { margin-bottom:16px; }
-.attend-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
-.attend-btn {
-  padding:14px; text-align:center; border:1px solid var(--beige);
-  font-size:12px; letter-spacing:2px; color:var(--stone);
-  cursor:pointer; background:var(--off); transition:all .2s;
-}
-.attend-btn.on { background:var(--dark); color:var(--white); border-color:var(--dark); }
-.submit-btn {
-  width:100%; padding:16px; background:var(--dark); color:var(--off);
-  font-family:'Gowun Batang',serif; font-size:12px; letter-spacing:4px;
-  border:none; cursor:pointer; transition:background .2s;
-}
-.submit-btn:hover { background:var(--gold); }
-.rsvp-success {
-  display:none; margin-top:20px; padding:20px;
-  background:var(--off); border:1px solid var(--beige); text-align:center;
-}
-.rsvp-success .ok-icon { font-size:22px; margin-bottom:8px; }
-.rsvp-success .ok-text { font-size:14px; color:var(--dark); letter-spacing:1px; }
-.rsvp-success .ok-sub { font-size:12px; color:var(--stone); margin-top:6px; }
 
 /* ── CONTACT ── */
 .contact-row {
@@ -630,39 +591,6 @@ footer.visible { opacity:1; }
   </div>
 </section>
 
-<!-- ── RSVP ── -->
-<div class="sec-divider"><div class="div-ornament"></div></div>
-<section id="rsvp" class="rsvp-section">
-  <div class="sec-label">RSVP</div>
-  <div class="sec-title">참석 여부 알리기</div>
-  <div class="gold-bar"></div>
-  <p style="text-align:center;font-size:13px;color:var(--stone);margin-bottom:24px;">5월 14일까지 알려주시면 감사합니다</p>
-  <div class="attend-row">
-    <div class="attend-btn on" onclick="selAttend(this,'yes')">✓ 참석합니다</div>
-    <div class="attend-btn" onclick="selAttend(this,'no')">✗ 참석이 어렵습니다</div>
-  </div>
-  <div class="form-group"><label class="form-lbl">이름</label><input class="form-input" id="rsvp-name" type="text" placeholder="성함을 입력해주세요"/></div>
-  <div class="form-group">
-    <label class="form-lbl">하객 구분</label>
-    <select class="form-sel" id="rsvp-side">
-      <option value="신랑측">신랑측</option>
-      <option value="신부측">신부측</option>
-    </select>
-  </div>     
-    <label class="form-lbl">참석 인원</label>
-    <select class="form-sel" id="rsvp-count">
-      <option>1명</option><option>2명</option><option>3명</option><option>4명 이상</option>
-    </select>
-  </div>
-  <div class="form-group"><label class="form-lbl">전하고 싶은 말</label><input class="form-input" id="rsvp-msg" type="text" placeholder="축하 메시지를 남겨주세요 (선택)"/></div>
-  <button class="submit-btn" onclick="submitRsvp()">전 송 하 기</button>
-  <div class="rsvp-success" id="rsvp-success">
-    <div class="ok-icon">💌</div>
-    <div class="ok-text">전송되었습니다</div>
-    <div class="ok-sub">참석해 주셔서 감사합니다</div>
-  </div>
-</section>
-
 <!-- ── CONTACT ── -->
 <div class="sec-divider"><div class="div-ornament"></div></div>
 <section id="contact">
@@ -848,77 +776,7 @@ function copyAcc(btn, num) {
   });
 }
 
-/* ── RSVP (Formspree 연동) ── */
 
-let attendVal = 'yes';
-
-function selAttend(el, val) {
-  document.querySelectorAll('.attend-btn')
-    .forEach(btn => btn.classList.remove('on'));
-
-  el.classList.add('on');
-  attendVal = val;
-}
-
-async function submitRsvp() {
-  const name = document.getElementById('rsvp-name').value.trim();
-  const count = document.getElementById('rsvp-count').value;
-  const msg = document.getElementById('rsvp-msg').value.trim();
-
-  if (!name) {
-    showToast('이름을 입력해주세요');
-    return;
-  }
-
-  const btn = document.querySelector('#rsvp .submit-btn');
-
-  if (btn.disabled) return;
-
-  btn.disabled = true;
-  btn.textContent = '전송 중...';
-
-  const data = {
-    "참석여부": attendVal === 'yes'
-      ? '참석합니다'
-      : '참석이 어렵습니다',
-    "이름": name,
-    "참석인원": attendVal === 'yes' ? count : '0명',
-    "메시지": msg
-  };
-
-  try {
-    const response = await fetch(FORMSPREE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-      throw new Error(`전송 실패: ${response.status}`);
-    }
-
-    document.getElementById('rsvp-success').style.display = 'block';
-
-    document.querySelector('#rsvp-success .ok-text')
-      .textContent = '참석 여부가 전달되었습니다';
-
-    showToast('전송이 완료되었습니다 💌');
-
-    document.getElementById('rsvp-name').value = '';
-    document.getElementById('rsvp-msg').value = '';
-
-  } catch (error) {
-    console.error(error);
-    showToast('전송에 실패했습니다. 다시 시도해주세요.');
-
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '전 송 하 기';
-  }
-}
 
 // ── 배경음악
 let playing = false;
